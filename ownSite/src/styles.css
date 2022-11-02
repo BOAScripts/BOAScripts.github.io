@@ -61,4 +61,11 @@ input:focus {
     border-color: var(--outline-color);
 }
 
+a{
+    color: var(--outline-color);
+}
+a:hover {
+    color: var(--special-color);
+    font-style: italic;
+}
 

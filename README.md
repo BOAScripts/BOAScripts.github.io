@@ -1,9 +1,20 @@
-# Welcome to my github page
+# Welcome to my GitHub page
 
-Just en easy way to keep an eye on my projects / snippets
+I will use this repo to publish my projects and snippets
 
-## Projects 
+## Bio
+
+I'm full time 
+
+## ToDo's:
+
+- [] Set structure
+- [] Set content
+- [] Be awsome
+
+## Projects:
+
+- [own site](/ownSite/index.html)
+- snake game
 
 ## Snippets
-
-## Infos
