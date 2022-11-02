@@ -1,0 +1,64 @@
+/*
+Define colors theme
+*/
+:root {
+    --bg-color: rgba(32,32,32, 1);
+    --text-color: rgba(238,239,242, 1);
+    --text-soft-color: rgba(238,239,241, 1);
+    --text-strong-color: rgba(187,187,187, 1);
+    --subtle-color: rgba(33,37,42, 1);
+    --border-color: rgba(108,118,131, 1);
+    --shadow-color: rgba(0,0,0, 1);
+    --input-color: rgba(28,28,28, 1);
+    --outline-color: rgba(78,162,159, 1);
+    --mark-color: rgba(104,208,205, 0.16);
+    --special-color: rgba(104,208,205, 1);
+    --special-bg-color: rgba(33,74,72, 1);
+    --special-text-color: rgba(228,242,242, 1);
+    --special-shadow-color: rgba(0,0,0, 1);
+    --special-mark-color: rgba(228,242,242, 0.16);
+    --light-color: rgba(125,247,243, 1);
+    --dark-color: rgba(13,59,58, 1);
+}
+body {
+    font-family: "Baloo 2", "Lucida Console", "Courier New", monospace;
+    text-align: center;
+    background-color: var(--subtle-color);
+    color: var(--text-color);
+}
+
+button {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    font-weight: 550;
+    cursor: pointer;
+    display: inline-block;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: var(--border-color);
+    background-color: var(--subtle-color);
+    color: var(--text-color);
+}
+button:hover,
+button:focus {
+    outline: none;
+    background-color: var(--mark-color);
+    border-color: var(--outline-color);
+}
+
+input {
+    height: 2em;
+    border-radius: 0.5em;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-style: solid;
+    border-color: var(--border-color);
+    text-align: center;
+}
+input:active,
+input:focus {
+    outline: none;
+    border-color: var(--outline-color);
+}
+
+
