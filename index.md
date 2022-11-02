@@ -8,9 +8,9 @@ I'm full time
 
 ## ToDo's:
 
-[] Set structure  
-[] Set content  
-[] Be awesome  
+- Set structure  
+- Set content  
+- Be awesome  
 
 ## Projects:
 
