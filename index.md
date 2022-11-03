@@ -2,9 +2,10 @@
 
 I will use this repo to publish my projects and snippets
 
-## Bio
+## It's a-me:
 
-I'm full time 
+Bio : ...  
+GitHub [profile](https://github.com/BOAScripts)
 
 ## ToDo's:
 
