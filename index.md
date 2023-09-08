@@ -6,7 +6,7 @@ I will use this repo to share documents and website projects.
 
 Bio : System operator that likes to try a bit of everything.  
 
-Downloadable CV [here](/SharedDocs/CV_Redacted.pdf).  
+Downloadable CV [here](/SharedDocs/CV.pdf).  
 GitHub [profile](https://github.com/BOAScripts).
 
 ## Projects:
