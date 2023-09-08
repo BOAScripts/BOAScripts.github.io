@@ -1,0 +1,254 @@
+/*
+Define colors theme
+*/
+:root {
+    --bg-color: rgba(32,32,32, 1);
+    --bg-lighter-color: rgb(28, 31, 36, 0.60);
+    --text-color: rgba(238,239,242, 1);
+    --text-soft-color: rgba(238,239,241, 1);
+    --text-strong-color: rgba(187,187,187, 1);
+    --subtle-color: rgba(33,37,42, 1);
+    --border-color: rgba(108,118,131, 1);
+    --shadow-color: rgba(0,0,0, 1);
+    --input-color: rgba(28,28,28, 1);
+    --outline-color: rgba(78,162,159, 1);
+    --mark-color: rgba(104,208,205, 0.16);
+    --special-color: rgba(104,208,205, 1);
+    --special-bg-color: rgba(33,74,72, 1);
+    --special-text-color: rgba(228,242,242, 1);
+    --special-shadow-color: rgba(0,0,0, 1);
+    --special-mark-color: rgba(228,242,242, 0.16);
+    --light-color: rgba(125,247,243, 1);
+    --dark-color: rgba(13,59,58, 1);
+}
+
+body {
+    font-family: "Baloo 2", "Lucida Console", "Courier New", monospace;
+    text-align: center;
+    background: url(./img/bg-motif.png);
+    color: var(--text-color);
+}
+header{
+    background: linear-gradient(to left , var(--subtle-color), var(--bg-color)20%, var(--bg-color)80%, var(--subtle-color)100%);
+    padding:0.1em 0 0.1em 0;
+}
+h1 {
+    text-decoration: underline;
+}
+
+button {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    font-weight: 550;
+    cursor: pointer;
+    display: inline-block;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: var(--border-color);
+    background-color: var(--subtle-color);
+    color: var(--text-color);
+}
+button:hover,
+button:focus {
+    outline: none;
+    background-color: var(--mark-color);
+    border-color: var(--outline-color);
+}
+
+a{
+    color: var(--outline-color);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--special-color);
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+#scores {
+    display: flex;
+    justify-content: space-around;
+
+}
+.scoreTxt {
+    margin-top: 0;
+    margin-bottom: 0.5em;    
+    padding: 0.5em;
+    font-size: 1.5em;
+    border: solid var(--outline-color);
+    border-top: 0;
+    background-color: var(--dark-color);
+    border-radius: 0 0 0.5em 0.5em;
+    box-sizing: content-box;
+    width: 20%;
+    box-shadow: 0 0 0.8em inset var(--shadow-color);
+
+}
+.scoreTxt span{
+    font-weight: 550;
+}
+.scoreTxt:first-of-type{
+    margin-left: 15em;
+}
+.scoreTxt:last-of-type{
+    margin-right: 15em;
+}
+
+.grHeader {
+    font-size: 2em;
+    font-weight: 550;
+    margin-bottom: 0.1em;
+    text-decoration: underline;
+}
+.list {
+    font-size: 1.5em;
+    padding: 0;
+    margin: 0;
+    font-style: italic;
+}
+
+#ghBanner {
+    display: block;
+    position: absolute;
+    padding: 10px 50px 10px 10px;
+    color: var(--text-color);
+    font-weight: 600;
+    border-radius: 0 0 5px 5px;
+    top: 0;
+    right: 10em;
+    background: url(./img/blacktocat-30_30.png) #0090ff no-repeat 95% 50%;
+}
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    margin-top: 3rem;
+}
+
+#startScreen {
+    background-color: var(--bg-lighter-color);
+    border: solid var(--border-color);
+    border-radius: 1em;
+}
+
+#scContent {
+    display: flex;
+    flex-direction: row;    
+    justify-content:center;
+    align-items: center;
+    margin: 1em 1em 0 1em;
+    
+}
+#scLeft {
+    flex-basis: 70%;
+}
+#scRight {
+    flex-basis: 30%;
+}
+
+#gamePreview {
+    width: auto;
+    max-width: 100%;    
+    border-radius: 1em;
+}
+
+#controlsImg {
+    width: auto;    
+}
+#gameRules {
+    margin: 2em 0;
+}
+
+#gameSize{
+    display: flex;
+    justify-content: center;
+    
+}
+#gameSize input {
+    position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+}
+#gameSize label {
+    font-size: 1em;
+    padding: 0.5em 1em;
+    align-self: center;
+    border: 0.2em solid var(--border-color);
+}
+#gameSize label:hover {
+    outline: none;
+    border: 0.2em solid var(--outline-color);
+    cursor: pointer;
+    
+}
+#gameSize input:checked+label{
+    border: 0.2em solid var(--outline-color);
+    background-color: var(--mark-color);
+    box-shadow: 0 0 1em inset var(--shadow-color);
+    
+}
+#gameSize label:first-of-type{
+    border-right: 0;
+    border-radius: 0.5em 0 0 0.5em;
+}
+#gameSize label:last-of-type{
+    border-left: 0;
+    border-radius: 0 0.5em 0.5em 0 ;
+}
+
+#play {
+    width: 50%;
+    font-size: 1.5em;
+    font-weight: 550;
+    margin: 1em 0 1em 0;
+}
+
+#endScreen {
+    margin: auto;
+    width: 25%;
+    border: solid var(--border-color);
+    border-radius: 1em;
+    background-color: var(--bg-lighter-color);
+
+}
+#endScreen button{
+    margin-bottom: 1em;
+    width: 50%;
+}
+
+footer {
+    position: fixed;
+    padding: 1em 0 1em 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: var(--bg-color);
+}
+
+@media screen and (max-width: 1100px) {
+    header {
+            padding-top: 1em;
+    }
+    #ghBannerText{
+        display: none; 
+    }
+    #ghBanner{
+        height: 12px;
+        right: 17em;
+    }
+    #ghBannerText:hover {
+        display: contents;
+    }
+    .scoreTxt:first-of-type {
+        margin:0;
+    }
+    .scoreTxt:last-of-type {
+        margin:0;
+    }
+}
