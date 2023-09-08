@@ -5,14 +5,12 @@ I will use this repo to share documents and website projects.
 ## It's a-me:
 
 Bio : System operator that likes to try a bit of everything.  
-Downloadable CV: [here](/SharedDocs/CV.pdf)  
-GitHub [profile](https://github.com/BOAScripts)
+
+Downloadable CV [here](/SharedDocs/CV_Redacted.pdf).  
+GitHub [profile](https://github.com/BOAScripts).
 
 ## Projects:
 
-- [snake game - html/js/css](/SnakeGame/index.html)
+- [Snake game](/SnakeGame/index.html) (html/css/js).
+- [Fiddeling with html/css](/ownSite/index.html) (nothing to see here...)
 
-## ToDo's:
-
-- Populate content
-- Be awesome
