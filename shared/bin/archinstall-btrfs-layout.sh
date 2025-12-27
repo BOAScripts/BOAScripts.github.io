@@ -182,6 +182,37 @@ copy_installation() {
     log_success "Installation copied successfully"
 }
 
+# Copy existing home data
+copy_home_data() {
+    log_info "Checking for existing home directory data..."
+
+    # Check if there's a home directory at top-level of home disk
+    if [[ ! -d /mnt/home_top/home ]]; then
+        log_info "No existing home directory found, skipping home copy"
+        return 0
+    fi
+
+    # Check if @home is empty or already populated
+    if [[ $(ls -A /mnt/home_top/@home 2>/dev/null | wc -l) -gt 0 ]]; then
+        log_warn "@home subvolume already contains data, skipping copy"
+        return 0
+    fi
+
+    log_info "Copying existing home directory to @home subvolume..."
+    log_warn "This may take a while depending on home directory size..."
+
+    rsync -aHAX --numeric-ids --info=progress2 \
+        /mnt/home_top/home/ /mnt/home_top/@home/ || error_exit "Failed to copy home directory"
+
+    # Verify copy
+    HOME_FILES=$(find /mnt/home_top/@home -mindepth 1 | wc -l)
+    if [[ $HOME_FILES -eq 0 ]]; then
+        log_warn "No files found in @home after copy (this might be OK if no users were created)"
+    else
+        log_success "Home directory copied successfully ($HOME_FILES items)"
+    fi
+}
+
 # Set default subvolume
 set_default_subvol() {
     log_info "Setting @ as default subvolume..."
@@ -242,7 +273,7 @@ generate_fstab() {
     echo "----------------------------------------"
 }
 
-# Cleanup old top-level installation
+# Cleanup old top-level installation (both root and home)
 cleanup_old_installation() {
     log_info "Checking for old installation data at top-level..."
 
@@ -253,43 +284,70 @@ cleanup_old_installation() {
     # Count directories that aren't subvolumes
     OLD_DIRS=$(find /mnt/cleanup_check -mindepth 1 -maxdepth 1 -type d ! -name '@*' 2>/dev/null | wc -l)
 
+    echo ""
+    log_warn "Cleanup Phase: Root Disk"
     if [[ $OLD_DIRS -eq 0 ]]; then
-        log_info "No old installation data found, skipping cleanup"
-        umount /mnt/cleanup_check
-        return 0
+        log_info "No old installation data found on root disk"
+    else
+        log_warn "Found $OLD_DIRS old directories at root Btrfs top-level"
+        echo ""
+        echo "Directories to be removed from root disk:"
+        find /mnt/cleanup_check -mindepth 1 -maxdepth 1 -type d ! -name '@*' -printf '  - %f\n'
+        echo ""
+
+        read -p "Remove old top-level data from root disk? (yes/no): " CLEANUP_CONFIRM
+
+        if [[ "$CLEANUP_CONFIRM" == "yes" ]]; then
+            log_info "Removing old top-level directories from root disk..."
+
+            find /mnt/cleanup_check -mindepth 1 -maxdepth 1 \
+                -type d ! -name '@*' \
+                -exec rm -rf --one-file-system {} + || log_warn "Some files couldn't be removed"
+
+            find /mnt/cleanup_check -mindepth 1 -maxdepth 1 \
+                ! -name '@*' ! -type d \
+                -exec rm -f -- {} + 2>/dev/null || true
+
+            log_success "Old root disk data removed"
+        else
+            log_info "Skipping root disk cleanup"
+        fi
     fi
 
-    echo ""
-    log_warn "Found $OLD_DIRS old directories at Btrfs top-level"
-    log_warn "These are duplicates of data now in @ subvolume"
-    echo ""
-    echo "Directories to be removed:"
-    find /mnt/cleanup_check -mindepth 1 -maxdepth 1 -type d ! -name '@*' -printf '  - %f\n'
-    echo ""
+    umount /mnt/cleanup_check
 
-    read -p "Remove old top-level installation data? (yes/no): " CLEANUP_CONFIRM
+    # Now check home disk
+    log_warn "Cleanup Phase: Home Disk"
+    mount -o subvolid=5 "$HOME_PART" /mnt/cleanup_check
 
-    if [[ "$CLEANUP_CONFIRM" == "yes" ]]; then
-        log_info "Removing old top-level directories..."
+    OLD_HOME_DIRS=$(find /mnt/cleanup_check -mindepth 1 -maxdepth 1 -type d ! -name '@*' 2>/dev/null | wc -l)
 
-        # Remove old directories (but keep subvolumes)
-        find /mnt/cleanup_check -mindepth 1 -maxdepth 1 \
-            -type d ! -name '@*' \
-            -exec rm -rf --one-file-system {} + || log_warn "Some files couldn't be removed"
-
-        # Remove any stray files
-        find /mnt/cleanup_check -mindepth 1 -maxdepth 1 \
-            ! -name '@*' ! -type d \
-            -exec rm -f -- {} + 2>/dev/null || true
-
-        log_success "Old installation data removed"
-
-        # Show what remains
-        echo ""
-        log_info "Remaining top-level contents:"
-        ls -la /mnt/cleanup_check | head -n 20
+    if [[ $OLD_HOME_DIRS -eq 0 ]]; then
+        log_info "No old data found on home disk"
     else
-        log_info "Skipping cleanup (you can do this manually later)"
+        log_warn "Found $OLD_HOME_DIRS old directories at home Btrfs top-level"
+        echo ""
+        echo "Directories to be removed from home disk:"
+        find /mnt/cleanup_check -mindepth 1 -maxdepth 1 -type d ! -name '@*' -printf '  - %f\n'
+        echo ""
+
+        read -p "Remove old top-level data from home disk? (yes/no): " CLEANUP_HOME_CONFIRM
+
+        if [[ "$CLEANUP_HOME_CONFIRM" == "yes" ]]; then
+            log_info "Removing old top-level directories from home disk..."
+
+            find /mnt/cleanup_check -mindepth 1 -maxdepth 1 \
+                -type d ! -name '@*' \
+                -exec rm -rf --one-file-system {} + || log_warn "Some files couldn't be removed"
+
+            find /mnt/cleanup_check -mindepth 1 -maxdepth 1 \
+                ! -name '@*' ! -type d \
+                -exec rm -f -- {} + 2>/dev/null || true
+
+            log_success "Old home disk data removed"
+        else
+            log_info "Skipping home disk cleanup"
+        fi
     fi
 
     umount /mnt/cleanup_check
@@ -340,6 +398,7 @@ main() {
     mount_toplevel
     create_subvolumes
     copy_installation
+    copy_home_data
     set_default_subvol
     cleanup_old_installation
     mount_final_layout
