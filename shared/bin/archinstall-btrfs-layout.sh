@@ -183,13 +183,24 @@ copy_installation() {
 }
 
 # Copy existing home data
+# Copy existing home data
 copy_home_data() {
     log_info "Checking for existing home directory data..."
 
-    # Check if there's a home directory at top-level of home disk
-    if [[ ! -d /mnt/home_top/home ]]; then
-        log_info "No existing home directory found, skipping home copy"
-        return 0
+    # archinstall puts home on the ROOT disk initially, not the home disk
+    if [[ ! -d /mnt/root_top/home ]]; then
+        log_warn "No existing home directory found on root disk"
+        log_info "Checking home disk just in case..."
+        if [[ -d /mnt/home_top/home ]]; then
+            log_info "Found home directory on home disk (unusual but OK)"
+            HOME_SOURCE="/mnt/home_top/home"
+        else
+            log_info "No home directory found, skipping home copy"
+            return 0
+        fi
+    else
+        HOME_SOURCE="/mnt/root_top/home"
+        log_info "Assuming home directory on root disk at $HOME_SOURCE"
     fi
 
     # Check if @home is empty or already populated
@@ -198,19 +209,27 @@ copy_home_data() {
         return 0
     fi
 
-    log_info "Copying existing home directory to @home subvolume..."
+    # Count items to be copied
+    HOME_ITEM_COUNT=$(find "$HOME_SOURCE" -mindepth 1 | wc -l)
+    if [[ $HOME_ITEM_COUNT -eq 0 ]]; then
+        log_info "Home directory is empty, nothing to copy"
+        return 0
+    fi
+
+    log_info "Copying home directory to @home subvolume ($HOME_ITEM_COUNT items)..."
     log_warn "This may take a while depending on home directory size..."
 
     rsync -aHAX --numeric-ids --info=progress2 \
-        /mnt/home_top/home/ /mnt/home_top/@home/ || error_exit "Failed to copy home directory"
+        "$HOME_SOURCE/" /mnt/home_top/@home/ || error_exit "Failed to copy home directory"
 
     # Verify copy
-    HOME_FILES=$(find /mnt/home_top/@home -mindepth 1 | wc -l)
-    if [[ $HOME_FILES -eq 0 ]]; then
-        log_warn "No files found in @home after copy (this might be OK if no users were created)"
-    else
-        log_success "Home directory copied successfully ($HOME_FILES items)"
-    fi
+    COPIED_FILES=$(find /mnt/home_top/@home -mindepth 1 | wc -l)
+    log_success "Home directory copied successfully ($COPIED_FILES items)"
+
+    # Show what was copied
+    echo ""
+    log_info "Users found in @home:"
+    ls -la /mnt/home_top/@home/ | grep '^d' | awk '{print "  - " $9}' | grep -v '^\.$\|^\.\.$'
 }
 
 # Set default subvolume
