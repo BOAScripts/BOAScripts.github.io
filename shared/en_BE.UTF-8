@@ -2,12 +2,15 @@ comment_char %
 escape_char /
 
 % English language locale for Belgium
+% Original Author: Yannick Vanhaeren
+% Original Gist: https://gist.github.com/yvh/630368018d7c683aca8da9e2baf7bfb9
 % Contact: Yannick Vanhaeren
 % Email:
 % Language: en
 % Territory: BE
-% Revision: 1.0
-% Date: 2017-11-02
+% Revision: 1.1
+% Date: 2025-12-26
+% Modified: Added to en-BE repository
 % Users: general
 % Charset: UTF-8
 
@@ -15,7 +18,7 @@ LC_IDENTIFICATION
 title      "English locale for Belgium"
 source     ""
 address    ""
-contact    "Yannick Vanhaeren"
+contact    ""
 email      ""
 tel        ""
 fax        ""
