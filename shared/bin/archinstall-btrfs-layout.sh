@@ -980,7 +980,7 @@ main() {
     cleanup_old_installation
     mount_final_layout
     generate_fstab
-    update_bootloader  # NEW: Update bootloader config
+    update_bootloader
     show_summary
     post_setup
 
