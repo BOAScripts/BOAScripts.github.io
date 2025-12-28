@@ -572,7 +572,7 @@ cleanup_old_installation() {
 
         if [[ $athome_count -eq 0 && "$HOME_COPY_SUCCESS" != true ]]; then
             echo -e "${RED}${BOLD}╔══════════════════════════════════════════════════════════╗${NC}"
-            echo -e "${RED}${BOLD}║  ⚠  DANGER: @home is EMPTY!                              ║${NC}"
+            echo -e "${RED}${BOLD}║  DANGER: @home is EMPTY!                                 ║${NC}"
             echo -e "${RED}${BOLD}║  Deleting these directories would cause DATA LOSS!       ║${NC}"
             echo -e "${RED}${BOLD}║  The home copy may have failed.                          ║${NC}"
             echo -e "${RED}${BOLD}╚══════════════════════════════════════════════════════════╝${NC}"
